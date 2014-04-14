@@ -20,7 +20,7 @@ class Rule
   end
 
   def self.base
-    [:and, :or, :not, :units, :count_courses, :same_dept, :same_course, :course_regex, :dept, :course, :pnp, :course_number]
+    [:and, :or, :not, :units, :count_courses, :same_dept, :same_course, :course_regex, :dept, :course, :pnp, :course_number, :lowerdiv, :upperdiv, :ls_breadth_arts, :ls_breadth_history, :ls_breadth_international, :ls_breadth_philosophy, :ls_breadth_social, :cnr_breadth_arts_history_philosophy, :cnr_breadth_social_international]
   end
 
   def base?
