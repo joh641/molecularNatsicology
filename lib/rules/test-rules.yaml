@@ -17,13 +17,63 @@ rules:
 
     lowerdiv:
         description: "Lower Division"
-        rule: course_number_range
-        args: [ 0, 99 ]
+        rule: course_number
+        args:
+            min: 0
+            max: 99
 
     upperdiv:
         description: "Upper Division"
-        rule: course_number_range
-        args: [ 100 ]
+        rule: course_number
+        args:
+            min: 100
+
+    four_units_ac:
+        description: "4-unit American Cultures course"
+        rule: units
+        args:
+            min: 4
+            rule: university_ac
+
+    four_cs_courses:
+        description: "4 CS courses"
+        rule: count_courses
+        args:
+            min: 4
+            rule: dept
+            args: COMPSCI
+
+    series:
+        description: "Series Requirement"
+        rule: same_dept
+        args:
+            rule: AND
+            args:
+                - same_course:
+                    - upperdiv
+                    - OR:
+                        - university_ac
+                        - cnr_breadth_arts_history_philosophy
+                        - cnr_breadth_social_international
+                - same_course:
+                    - lowerdiv
+                    - OR:
+                        - university_ac
+                        - cnr_breadth_arts_history_philosophy
+                        - cnr_breadth_social_international
+
+    lowerdiv_units:
+        description: "EECS lower division requirement"
+        rule: units
+        args:
+            min: 20
+            rule: OR
+            args:
+                - course: COMPSCI.61A
+                - course: COMPSCI.61B
+                - course: COMPSCI.61C
+                - course: EL ENG.20
+                - course: EL ENG.40
 
     ls_breadth_arts:
         description: "Arts and Literature Breadth Requirement"
@@ -3538,8 +3588,9 @@ rules:
         description: "Humanities and Social Sciences (14 units)"
         rule: units
         args:
-            - numunits: 14
-            - OR:
+            min: 14
+            rule: OR
+            args:
                 - rule: university_ac
                 - rule: cnr_breadth_arts_history_philosophy
                 - rule: cnr_breadth_social_international
@@ -3581,27 +3632,30 @@ rules:
         description: "Upper Division CNR Requirement (15 units)"
         rule: units
         args:
-            - numunits: 15
-            - same_course:
-                - OR:
-                    - dept: AGR CHM
-                    - dept: ENE,RES
-                    - dept: ESPM
-                    - dept: NUSCTX
-                    - dept: PLANTBI
-                - rule: upperdiv
+            min: 15
+            rule: AND
+            args:
+                - same_course:
+                    - OR:
+                        - dept: AGR CHM
+                        - dept: ENE,RES
+                        - dept: ESPM
+                        - dept: NUSCTX
+                        - dept: PLANTBI
+                    - upperdiv
 
     molecular_toxicology_upper:
         description: "Upper Division Molecular Toxicology Requirement (36 units)"
         rule: AND
         args:
             - course: MCELLBI.102
-            - course: MCELLBI.104
-            - course: INTEGBI.141
+            - OR:
+                - course: MCELLBI.104
+                - course: INTEGBI.141
             - OR:
                 - course: PLANTBI.C112
                 - course: MCELLBI.C112
-            - course: PB HLTH.162A
+                - course: PB HLTH.162A
             - OR:
                 - course: PLANTBI.C112
                 - course: MCELLBI.C112L
@@ -3611,8 +3665,9 @@ rules:
             - course: NUSCTX.171
             - course: NUSCTX.193
             - units:
-                - numunits: 36
-                - OR:
+                min: 36
+                rule: OR
+                args:
                     - course: MCELLBI.102
                     - course: MCELLBI.104
                     - course: INTEGBI.141
@@ -3650,9 +3705,12 @@ rules:
                     - course: PB HLTH.150B
                     - course: PB HLTH.170B
                     - course: UGIS.192C
-                    - dept: INTEGBI
-                    - dept: MCELLBI
-                    - dept: PLANTBI
+                    - same_course:
+                        - upperdiv
+                        - OR:
+                            - dept: INTEGBI
+                            - dept: MCELLBI
+                            - dept: PLANTBI
 
     cnr_molecular_toxicology_major:
         description: "Molecular Toxicology Major"
@@ -3665,5 +3723,4 @@ rules:
             - hss
             - phys_math
             - bio_nr
-            - molecular_toxicology_upper
             - molecular_toxicology_upper

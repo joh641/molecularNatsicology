@@ -1,4 +1,5 @@
 require "#{Rails.root}/lib/rules/rule"
+require "#{Rails.root}/lib/rules/result"
 
 class CourseFilter < Rule
   @source = :course_filter
@@ -8,14 +9,15 @@ class CourseFilter < Rule
   end
 
   def check(plan, args)
+    result = Result.new self, false
     plan.courses.each do |course|
-      if check_course plan, course, args
-        course.rule_list.add @@current_rule
-        course.save
-        return true 
+      subresult_boolean = check_course plan, course, args
+      if subresult_boolean
+        result.add_course course
+        result.pass = true
       end
     end
-    false
+    result
   end
 
   def check_course(plan, course, args)

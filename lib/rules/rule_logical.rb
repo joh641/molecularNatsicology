@@ -1,94 +1,84 @@
 require "#{Rails.root}/lib/rules/rule"
+require "#{Rails.root}/lib/rules/result"
 
 class AndRule < Rule
   def check(plan, entries)
+    result = Result.new self, true
     Rule.parse_entries(entries).each do |rule, args|
-      return false unless rule.check plan, args
+      subresult = rule.check plan, args
+      if result.rule.name == :not
+        result.courses_subtract subresult
+      else
+        result.courses_union subresult
+      end
+      result.pass = false unless subresult.pass
+      result.subresults << subresult
     end
-    true
+    result
   end
 end
 Rule.add(AndRule.new :and)
 
 class OrRule < Rule
   def check(plan, entries)
+    result = Result.new self, false
     Rule.parse_entries(entries).each do |rule, args|
-      return true if rule.check plan, args
+      subresult = rule.check plan, args
+      result.courses_union subresult
+      result.pass = true if subresult.pass
+      result.subresults << subresult
     end
-    false
+    result
   end
 end
 Rule.add(OrRule.new :or)
 
 class NotRule < Rule
   def check(plan, entries)
+    result = Result.new self, true
     Rule.parse_entries(entries).each do |rule, args|
-      return false if rule.check plan, args
+      subresult = rule.check plan, args
+      result.courses_union subresult
+      result.pass = false if subresult.pass
+      result.subresults << subresult
     end
-    true
+    result
   end
 end
 Rule.add(NotRule.new :not)
-
-class UnitsRule < Rule
-  def check(plan, entry)
-    total = 0
-    numunits = entry[0]['numunits']
-    rule = entry[1]
-    rule, args = Rule.parse_entry rule
-    plan.courses.each { |course| 
-      if rule.check course, args
-        total += course.units
-        course.rule_list.add @@current_rule
-        course.save
-      end
-    }
-    total >= numunits
-  end
-end
-Rule.add(UnitsRule.new :units)
-
-class CoursesRule < Rule
-  def check(plan, entry)
-    total = 0
-    numcourses = entry[0]['numcourses']
-    rule = entry[1]
-    rule, args = Rule.parse_entry rule
-    plan.courses.each { |course| 
-      if rule.check course, args
-        total += 1
-        course.rule_list.add @@current_rule
-        course.save
-      end
-    }
-    total >= numcourses
-  end
-end
-Rule.add(CoursesRule.new :courses)
-
-class SeriesRule < Rule
-  def check(plan, entry)
-    rule = entry[0]
-    rule, args = Rule.parse_entry rule
-    plan.courses.each do |course| 
-      courses = Plan.new
-      department = course.name.match(/^([^.]+)/)[0]
-      plan.courses.each { |course| courses.add course if course.name.match(/^([^.]+)/)[0] == department }
-      return true if rule.check courses, args
-    end
-    false
-  end
-end
-Rule.add(SeriesRule.new :series)
 
 # This is ANDcourse. We do not need ORcourse because ANDcourse will change
 # all of its children's plan arguments to a single course.
 class SameCourseRule < CourseFilter
   def check_course(plan, course, entries)
-    Rule.parse_entries(entries).each do |rule, args|
-      return false unless rule.check course, args
-    end
-    true
+    result = Rule.get(:and).check course, entries
+    result.pass
   end
 end
 Rule.add(SameCourseRule.new :same_course)
+
+
+# SeriesRule is obsolete
+
+class SameDeptRule < Rule
+  def check(plan, entry)
+    rule, args = Rule.parse_entry entry
+
+    result = Result.new self, false
+    plan.courses.each do |course1| 
+      dept_plan = Plan.new
+      plan_dept_name = course1.dept
+      plan.courses.each do |course2|
+        dept_plan.add course2 if course2.dept == plan_dept_name
+      end
+      subresult = rule.check dept_plan, args
+      if subresult.pass
+        result.pass = true
+        result.courses_union subresult
+        result.subresults << subresult
+      end
+    end
+    result
+  end
+end
+Rule.add(SameDeptRule.new :same_dept)

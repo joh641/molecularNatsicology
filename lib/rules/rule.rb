@@ -1,6 +1,5 @@
 class Rule
-  attr_accessor :name
-  attr_accessor :description
+  attr_accessor :name, :description
 
   @@current_rule = Rule.name
   @source = :raw
@@ -20,8 +19,12 @@ class Rule
     fail 'abstract' if abstract?
   end
 
-  def self.current_rule
-    @@current_rule
+  def self.base
+    [:and, :or, :not, :units, :count_courses, :same_dept, :same_course, :course_regex, :dept, :course, :pnp, :course_number]
+  end
+
+  def base?
+    Rule.base.include? name
   end
 
   def abstract?
@@ -85,7 +88,8 @@ class Rule
 
   def check_print(plan, args)
     result = check plan, args
-    "The plan #{result ? 'PASSES' : 'FAILS'} rule #{name}."
+    result.tag_courses
+    ["The plan #{result.pass ? 'PASSES' : 'FAILS'} rule #{name}.", result.courses]
   end
 
 end

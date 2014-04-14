@@ -15,7 +15,14 @@ MolecularNatsicology::Application.routes.draw do
     end
   end
   
-  resources :rules
+  resources :rules do
+    collection do
+      get 'display'
+    end
+  end
+
+  get '/tag', to: 'tags#tag'
+  get '/tag_all', to: 'tags#tag_all'  
 
   root :to => "courses#index"
 
