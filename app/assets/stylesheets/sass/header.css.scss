@@ -64,13 +64,13 @@ $total-menu-height: $link-top-padding + $link-bottom-padding + $menu-text-height
         }
 
         li:hover {
-         background: lighten($ld-grey, 10%);
+         background: lighten($mn-green, 10%);
         }
     }
 }
 
 #main-menu {
-    background-color: $ld-grey;
+    background-color: $mn-green;
     @include font($main-font, 300);
     .navbar-header {
         img {
