@@ -1,6 +1,16 @@
-@import "twitter/bootstrap/mixins";
-@import "twitter/bootstrap/variables";
+@import "bootstrap/mixins";
+@import "bootstrap/variables";
 @import "sass/utils";
 
 $mn-green: #009933;
 $main-font: 'Open Sans', sans-serif;
+
+ul {
+  list-style: none;
+}
+
+.thumbnail { height: 280px !important; width: 250px; }
+.btn-droppable { width: 180px; height: 30px; padding-left: 4px; }
+.btn-draggable { width: 160px; }
+
+.thumbnail#backpack, .thumbnail#garbage { height: 280px !important; width: 175px; }
