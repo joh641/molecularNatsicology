@@ -1,6 +1,7 @@
 #load submodules
 
 angular.module 'molecularnatsicology.controllers', []
+angular.module 'molecularnatsicology.filters', []
 
 #molecularnatsicology Module
 
@@ -9,5 +10,6 @@ molecularnatsicology = angular.module 'molecularnatsicology', [
   'ngRoute'
   'infinite-scroll'
   'molecularnatsicology.controllers'
+  'molecularnatsicology.filters'
 ]
 
