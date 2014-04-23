@@ -8,14 +8,13 @@ Rails.application.routes.draw do
   resources :courses do
     collection do
       get 'search'
+      get 'tagged_courses'
     end
   end
 
   resources :plans do
     member do
       put 'save'
-      # get 'add_course'
-      # delete 'remove_course'
       get 'check'
     end
   end
@@ -23,6 +22,7 @@ Rails.application.routes.draw do
   resources :rules do
     collection do
       get 'display'
+      get 'search'
     end
   end
 

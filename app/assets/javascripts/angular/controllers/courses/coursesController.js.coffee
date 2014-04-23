@@ -1,7 +1,7 @@
 #Courses controller
 
-angular.module('molecularnatsicology.controllers').controller 'CourseListCtrl', ['$scope', '$http', '$filter', ($scope, $http, $filter) ->  
-  $http.get("/courses/search?course=all").success (data) ->
+angular.module('molecularnatsicology.controllers').controller 'CourseListCtrl', ['$scope', '$http', '$filter', ($scope, $http, $filter) ->
+  $http.get("/courses/tagged_courses.json").success (data) ->
     $scope.courses = data
     $scope.totalDisplayed = 20
  

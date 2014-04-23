@@ -1,16 +1,15 @@
-#rules
-  %h3 Rules
+#rules.col-md-2
   %table.table
     %thead
       %tr
         %th Rule
-        %th Description
         %th Result
         %th Fulfilling Set
     .body
       %tr(data-ng-repeat="rule in rules")
         %td 
-          %a(href="{{rule.url}}") {{rule.name}}
-        %td {{rule.description}}
-        %td {{rule.result}}
-        %td {{rule.courses}}
+          %a.rule(href="{{rule.url}}") {{rule.description}}
+        %td#result(class="{{rule.result.pass | color}}") {{rule.result.pass | satisfied}}
+        %td
+          .course(data-ng-repeat="course in rule.result.courses")
+            {{course}}
