@@ -17,6 +17,7 @@ rules:
 
     lowerdiv:
         description: "Lower Division"
+        hidden: true
         rule: course_number
         args:
             min: 0
@@ -24,12 +25,14 @@ rules:
 
     upperdiv:
         description: "Upper Division"
+        hidden: true
         rule: course_number
         args:
             min: 100
 
     ls_breadth_arts:
         description: "Arts and Literature Breadth Requirement"
+        hidden: true
         rule: same_course
         args:
             - OR:
@@ -880,6 +883,7 @@ rules:
 
     ls_breadth_history:
         description: "Historical Studies Breadth Requirement"
+        hidden: true
         rule: same_course
         args:
             - OR:
@@ -1448,6 +1452,7 @@ rules:
 
     ls_breadth_international:
         description: "International Studies Breadth Requirement"
+        hidden: true
         rule: OR
         args:
             - course: AFRICAM.4B
@@ -1897,6 +1902,7 @@ rules:
 
     ls_breadth_philosophy:
         description: "Philosophy and Values Breadth Requirement"
+        hidden: true
         rule: same_course
         args:
             - OR:
@@ -2244,6 +2250,7 @@ rules:
 
     ls_breadth_social:
         description: "Social and Behavioral Sciences Breadth Requirement"
+        hidden: true
         rule: same_course
         args:
             - OR:
@@ -3524,6 +3531,7 @@ rules:
 
     cnr_breadth_arts_history_philosophy:
         description: "Arts, History, or Philosophy Breadth"
+        hidden: true
         rule: OR
         args:
             - rule: ls_breadth_history
@@ -3532,6 +3540,7 @@ rules:
 
     cnr_breadth_social_international:
         description: "Social or International Breadth"
+        hidden: true
         rule: OR
         args:
             - rule: ls_breadth_social
@@ -3672,6 +3681,7 @@ rules:
 
     cnr_molecular_toxicology_major:
         description: "Molecular Toxicology Major"
+        hidden: true
         rule: AND
         args:
             - university_ac
