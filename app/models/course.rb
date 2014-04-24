@@ -24,11 +24,12 @@ class Course < ActiveRecord::Base
       courses = doc.xpath("//CanonicalCourse")
       courses.each do |course_info|
         name = course_info.xpath("courseUID").text
-        next if Course.find_by_name name
+        next if Course.find_by name: name
         course = Course.new
         course.name = name
         course.number = name.match(/[\d]+/)[0]
         course.units = course_info.xpath("lowerUnits").text.to_i
+        course.title = course_info.xpath("courseTitle").text
         course.description = course_info.xpath("courseDescription").text
         course.save
       end
@@ -38,36 +39,33 @@ class Course < ActiveRecord::Base
   end
 
   def self.update_all
-    depts = []
-    Course.all.each do |course|
-      next if depts.include? course.dept
-      depts << course.dept
-      self.update(course.dept)
-    end
+    Course.all.each { |course| course.update }
   end
 
-  def self.update(department)
-    uri = "https://apis-dev.berkeley.edu/cxf/asws/course?departmentCode=#{CGI.escape(department)}&_type=xml&app_id=#{ENV['APP_ID']}&app_key=#{ENV['APP_KEY']}"
-    puts uri
-    puts ENV['APP_ID']
-    puts ENV['APP_KEY']
+  def self.update_all_with_space
+    Course.all.each { |course| course.update if course.has_space?}
+  end
+
+  def has_space?
+    name[" "]
+  end
+
+  def update
+    uri = "https://apis-dev.berkeley.edu/cxf/asws/course?courseUID=#{CGI.escape name}&_type=xml&app_id=#{ENV['APP_ID']}&app_key=#{ENV['APP_KEY']}"
     begin
       doc = APICaller.call_api(uri)
-      courses = doc.xpath("//CanonicalCourse")
-      courses.each do |course_info|
-        name = course_info.xpath("courseUID").text
-        course = Course.find_by_name(name)  
-        course.description = course_info.xpath("courseDescription").text
-        course.save
-      end
+      course_info = doc.xpath("//CanonicalCourse")[0]
+      self.title = course_info.xpath("courseTitle").text
+      self.description = course_info.xpath("courseDescription").text
+      self.save
     rescue => e
-      puts "error in course creation: " + e.message
+      puts "error in course update, course = #{name}: " + e.message
     end
   end
 
   def self.clear_tags(course_ids)
     course_ids.each do |id|
-      course = Course.find_by_id id
+      course = Course.find_by id: id
       course.rule_list = []
       course.save
     end
