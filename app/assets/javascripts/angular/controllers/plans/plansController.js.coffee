@@ -9,9 +9,10 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
 
   #todo: put garbage course in right place instead of sorting everything (since already sorted at beginning)
   $scope.sortCourses = (a, b) -> switch
-      when a.name > b.name then 1
-      when a.name < b.name then -1
-      else
+        when a.dept > b.dept then 1
+        when a.dept < b.dept then -1
+        when a.number > b.number then 1
+        when a.number < b.number then -1
 
   $http.get("/courses/tagged_courses.json").success (data) ->
     $scope.courses = data
@@ -36,6 +37,13 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.totalDisplayed = 20
 
   # END CoursesController
+
+  # later make one method for returning garbage to $scope.courses
+  $scope.clearSemester = (semester) ->
+    semesterCourses = $scope[semester]
+    $scope[semester] = []
+    $scope.courses.push course for course in semesterCourses
+    $scope.courses.sort $scope.sortCourses
 
   $scope.findSemester = (data, name) ->
     for semester in data
@@ -69,7 +77,7 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.updatePlan()
     for rule in $scope.rules
       rule["result"] = $scope.checkRule rule
-  
+    
   $scope.updatePlan = ->
     $scope.plan["courses"] = []
     for semester in $scope.semesters
@@ -77,6 +85,12 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
       unless semester is "backpack"
         for course in $scope.plan[semester]
           $scope.plan["courses"].push course
+    $scope.updateUnits()
+
+  $scope.updateUnits = ->
+    $scope.units = 0
+    for course in $scope.plan["courses"]
+      $scope.units += course.units
 
   $scope.savePlan = ->
     $http.put("#{window.location.pathname}/save", $scope.plan)
