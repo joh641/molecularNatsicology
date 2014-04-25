@@ -27,7 +27,7 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.totalDisplayed += 30
 
   $scope.filterCourses = ->
-    $filter('filter') $scope.courses, $scope.query
+    $filter('filter') $scope.courses, {name: $scope.query}
 
   $scope.$watchCollection 'garbage', ->
     garbageCourse = $scope.garbage[0]
@@ -39,6 +39,16 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.totalDisplayed = 20
 
   # END CoursesController
+  # later make one method for returning garbage to $scope.courses
+  $scope.dragged = false
+
+  $scope.courseDisplay= (course) ->
+    if not $scope.dragged
+      $("#course_#{course}").modal('show')
+    $scope.dragged = false
+
+  $scope.startDragging = ->
+    $scope.dragged = true
 
   # later make one method for returning garbage to $scope.courses
   $scope.clearSemester = (semester) ->
@@ -79,6 +89,9 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.updatePlan()
     for rule in $scope.rules
       rule["result"] = $scope.checkRule rule
+      if rule["result"]["pass"]
+        for subrule in rule["subrules"]
+          rule["result"]["pass"] = false if not $scope.checkRule(subrule)["pass"]
     
   $scope.updatePlan = ->
     $scope.plan["courses"] = []
@@ -87,6 +100,7 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
       unless semester is "backpack"
         for course in $scope.plan[semester]
           $scope.plan["courses"].push course
+    $scope.planCourses = $scope.plan["courses"].concat $scope.backpack
     $scope.updateUnits()
 
   $scope.updateUnits = ->

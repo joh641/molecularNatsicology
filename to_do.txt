@@ -17,6 +17,7 @@ functionality
 - able to edit plan names, able to delete plans
 - switch plans without reload
 - query partial matches across spaces
+- ninjacourses/courserank semesterly calendar
 
 appearance
 
@@ -35,6 +36,9 @@ appearance
   - flip card to confirm clear
   - option to save to backpack
 - alphabetically sort courses that satisfy a rule
+- some course names cut off
+- for long course descriptions, continue/more button
+- loading bars/progress wheel
 
 chores
 
@@ -45,6 +49,8 @@ chores
 - separate courses and plans controller again (combined for sake of duplicate removal)
 - updating rule (can only use up to 2 from same dept for breadths)
 - labeling pnp courses
+- have demo use max amount of things same as regular plans
+- more consistent json object attribute accessing [] vs .
 
 structure
 
