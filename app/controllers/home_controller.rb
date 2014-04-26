@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   
   def index
     @landing_page = true 
+    @user = User.new
   end
 
   def demo
@@ -10,7 +11,7 @@ class HomeController < ApplicationController
     @plan ||= Plan.create_demo 
     session[:demo_id] = @plan.id
     respond_to do |format|
-      format.html
+      format.html { render 'plans/show.html' }
       format.json { render partial: 'plans/show.json' }
     end
   end
