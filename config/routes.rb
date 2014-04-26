@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get '/demo' => 'home#demo', as: 'demo'
   put '/demo/save' => 'home#demo_save'
   get '/demo/check' => 'home#demo_check'
+  get '/landing' => 'home#index'
 
   devise_for :users
   resources :courses do
