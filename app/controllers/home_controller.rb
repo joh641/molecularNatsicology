@@ -2,13 +2,18 @@ class HomeController < ApplicationController
   respond_to :html, :json
   
   def index
-    @landing_page = true 
-    @user = User.new
+    if signed_in?
+      redirect_to demo_path and return
+    else
+      @landing_page = true 
+      @user = User.new
+    end
   end
 
   def demo
     @plan = session[:demo_id] ? Plan.find_by(id: session[:demo_id]) : Plan.create_demo 
     @plan ||= Plan.create_demo 
+    @demo = true
     session[:demo_id] = @plan.id
     respond_to do |format|
       format.html { render 'plans/show.html' }

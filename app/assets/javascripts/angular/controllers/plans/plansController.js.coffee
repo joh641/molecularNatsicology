@@ -67,6 +67,7 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     []
 
   $scope.tagged_with = (course, rule) ->
+    return true if course.uid is rule.name
     for tags in course.tagged_with
       return true if tags is rule.name
     false
@@ -84,8 +85,15 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
         fulfillingSet.push course 
         numCourses += 1
         numUnits += course["units"]
+    pass = numUnits >= rule.numUnits and numCourses >= rule.numCourses
+    if pass and rule.operator
+      for subrule in rule["subrules"]
+        if rule.operator == "AND"
+          pass = false unless $scope.checkRule(subrule)["pass"]
+        if rule.operator == "OR"
+          pass = true if $scope.checkRule(subrule)["pass"]
     {
-      "pass": numUnits >= rule.numUnits and numCourses >= rule.numCourses
+      "pass": pass
       "courses": {id: course["id"], name: course["name"]} for course in fulfillingSet
     }
 
@@ -93,9 +101,6 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.updatePlan()
     for rule in $scope.rules
       rule["result"] = $scope.checkRule rule
-      if rule["result"]["pass"]
-        for subrule in rule["subrules"]
-          rule["result"]["pass"] = false if not $scope.checkRule(subrule)["pass"]
     
   $scope.updatePlan = ->
     $scope.plan["courses"] = []
@@ -111,6 +116,10 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.units = 0
     for course in $scope.plan["courses"]
       $scope.units += course.units
+    for semester in $scope.semesters.concat "backpack"
+      $scope[semester]["units"] = 0
+      for course in $scope[semester]
+        $scope[semester]["units"] += course.units
 
   $scope.savePlan = ->
     $http.put("#{window.location.pathname}/save", $scope.plan)

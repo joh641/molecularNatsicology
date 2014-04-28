@@ -1,7 +1,7 @@
 class PlansController < ApplicationController
   respond_to :html, :json
-  before_filter :signed_in
-  before_filter :is_owner, :only => [:show, :add_course, :remove_course, :save, :check]
+  before_action :signed_in
+  before_action :is_owner, :except => [:index, :create]
   
   def index
     @plans = current_user.plans
@@ -9,6 +9,7 @@ class PlansController < ApplicationController
 
   def show
     @plan = Plan.find_by id: params[:id]
+    @demo = false
     respond_to do |format|
       format.html
       format.json { render partial: 'show.json' }
@@ -22,6 +23,24 @@ class PlansController < ApplicationController
     Plan.semesters.each { |semester| plan.semesters.build name: semester.to_s }
     flash[:notice] = plan.save ? "Plan #{plan.name} successfully created" : "Plan name invalid"
     redirect_to :back
+  end
+
+  def update
+    @plan = Plan.find_by id: params[:id]
+
+    respond_to do |format|
+      if @plan.update_attributes plans_params
+        format.json { respond_with_bip(@plan) }
+      else
+        format.json { respond_with_bip(@plan) }
+      end
+    end
+  end
+
+  def destroy
+    plan = Plan.find_by id: params[:id]
+    plan.destroy
+    redirect_to plans_path, notice: "#{plan.name} was deleted."
   end
 
   def save
