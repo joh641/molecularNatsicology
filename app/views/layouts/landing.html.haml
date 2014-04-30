@@ -1,13 +1,16 @@
 !!! 5
-%html(data-ng-app="ursamajor")
+%html(data-ng-app="molecularnatsicology")
   %head
-    %title ursaMajor
+    %title molecularNatsicology
     = favicon_link_tag '/favicon.ico'
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'
     = csrf_meta_tags
 
-  %body{:class => @landing_page? "landing_page" : ""}
+  %body.landing_page
+
+    = render "layouts/flash"
+
     .container
       .content.row
         = yield

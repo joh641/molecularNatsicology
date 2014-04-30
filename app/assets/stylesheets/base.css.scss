@@ -7,6 +7,7 @@ $main-font: 'Open Sans', sans-serif;
 
 body {
   font-family: $main-font;
+  background-color: #FCFCFC;
 }
 
 ul {
@@ -25,10 +26,12 @@ a:hover {
   text-decoration: none;
   opacity: 0.8; 
 }
+
 @font-face {
   font-family: 'Pacifico';
   src: font-url('Pacifico.ttf') format('truetype');
 }
+
 .home-link {
 	font-family: 'Pacifico'
 }
