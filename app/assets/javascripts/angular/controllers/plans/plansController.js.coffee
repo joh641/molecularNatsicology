@@ -27,7 +27,7 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.totalDisplayed += 30
 
   $scope.filterCourses = ->
-    $filter('filter') $scope.courses, {name: $scope.query}
+    $filter('filter') $scope.courses, {searchNames: $scope.query}
 
   $scope.$watchCollection 'garbage', ->
     garbageCourse = $scope.garbage[0]
@@ -66,9 +66,9 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
       return semester[name] if semester[name]
     []
 
-  $scope.tagged_with = (course, rule) ->
+  $scope.taggedWith = (course, rule) ->
     return true if course.uid is rule.name
-    for tags in course.tagged_with
+    for tags in course.taggedWith
       return true if tags is rule.name
     false
 
@@ -81,7 +81,7 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     numCourses = numUnits = 0
     fulfillingSet = []
     for course in $scope.plan.courses
-      if $scope.tagged_with(course, rule)
+      if $scope.taggedWith(course, rule)
         fulfillingSet.push course 
         numCourses += 1
         numUnits += course["units"]
@@ -95,6 +95,7 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     {
       "pass": pass
       "courses": {id: course["id"], name: course["name"]} for course in fulfillingSet
+      "units": numUnits
     }
 
   $scope.checkRules = ->

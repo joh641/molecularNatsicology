@@ -1,5 +1,4 @@
 In Progress
-- fix button for inplace editing of name
 - remove course if used for rule and can only be used once
   - all different combinations to decide which one to remove/use for a certain rule
     - utility function of numRulesSatisfied, proportion of courses left to fulfill other requirements
@@ -12,27 +11,19 @@ In Progress
   - a schedule that's personal
   - courses bring us together
   - want the right schedule? just browse
+  - degree auditing in an instant
   
 Next Tasks
-- favicon
-- switch things to minified js
+- save dept name as field
 - tag line
-- better mappings of department names, also search by title/description
-- consistent displaying of rules (only main, no hidden)
-- show units in course page
-- show unit count of fulfilling set
 - selecting which rules you want
 - switch plans without reload
 - editing of course info in ui
 - display rule description in modal, plus courses that satisfy
-- display course names as search_name ones all throughout site
 - sort courses beforehand in rails
   - more efficient -> place garbage course in right place instead of sorting everything
 
 Functionality
-- make front-end checking more efficient 
-  - fail fast
-  - check subrules at same time as main rule
 - autopopulate plans from user information (major, years of semester)
 - query partial matches across spaces
 - updating rule (can only use up to 2 from same dept for breadths)
@@ -55,8 +46,9 @@ Appearance
 
 Chores
 - going through completed rules, make sure they work
-- separate courses and plans controller again (combined for sake of duplicate removal)
 - documentation
+- tag rules by major
+- fix seeds.rb (replace quotes)
 
 After First Release
 - able to flag a course under a certain rule
@@ -65,6 +57,9 @@ After First Release
 - handling more than one major
 - handling variable unit courses
 - labeling pnp courses
+- make front-end checking more efficient 
+  - fail fast
+  - check subrules at same time as main rule
 
 Possible Features
 - popular rules
@@ -79,11 +74,14 @@ Possible Features
 - user picks color of classes, heavier load can tell by color (based on #units, diff reqs, etc)
 
 Optional Tasks
+- maybe don't use .concat?
+- allow searching by title
 - loading bars/progress wheel
 - alphabetically sort course when swapping between query list and ones already in plan
 - in results, adding a checkmark shifts everything a bit
 - shorten names of rules
 - more consistent json object attribute accessing [] vs .
+- separate courses and plans controller again (combined for sake of duplicate removal)
 - colors for flash messages
 - delete courses
 -structure
