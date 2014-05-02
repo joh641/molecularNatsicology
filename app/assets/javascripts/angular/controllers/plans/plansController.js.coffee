@@ -35,10 +35,6 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.garbage = []
 
   # END CoursesController
-  # later make one method for returning garbage to $scope.courses
-  $scope.semesterSettings = (semester) ->
-    if confirm "Delete #{semester}?"
-      $scope.clearSemester semester
 
   $scope.dragged = false
 
@@ -52,10 +48,18 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
 
   # later make one method for returning garbage to $scope.courses
   $scope.clearSemester = (semester) ->
+    if confirm "Clear #{semester}?"
+      semesterCourses = $scope[semester]
+      $scope[semester] = []
+      $scope.courses.push course for course in semesterCourses
+      $scope.courses.sort $scope.sortCourses
+      $scope.updateUnits()
+
+  $scope.pushToBackpack = (semester) ->
     semesterCourses = $scope[semester]
     $scope[semester] = []
-    $scope.courses.push course for course in semesterCourses
-    $scope.courses.sort $scope.sortCourses
+    $scope.backpack.push course for course in semesterCourses
+    $scope.updateUnits()
 
   $scope.findSemester = (data, name) ->
     for semester in data
@@ -113,7 +117,7 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.units = 0
     for course in $scope.plan["courses"]
       $scope.units += course.units
-    for semester in $scope.semesters.concat "backpack"
+    for semester in $scope.semesters
       $scope[semester]["units"] = 0
       for course in $scope[semester]
         $scope[semester]["units"] += course.units
