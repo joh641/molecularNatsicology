@@ -5,6 +5,41 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
   $scope.garbage = []
   $scope.plan = {}
 
+  # CODE for INTROJS
+  $scope.IntroOptions =
+    steps: [
+      intro: "Hi! Welcome to your planner."
+    ,
+      intro: "molecularNatsicology helps you plan your progress towards graduation with a simple drag-and-drop interface."
+    ,
+      element: "#query"
+      intro: "Search here for courses."
+      position: "right"
+    ,
+      element: ".backpack"
+      intro: "Drag courses to your backpack for later use."
+      position: "right"
+    ,
+      element: "#garbage"
+      intro: "Or throw them away in the garbage."
+      position: "right"
+    ,
+      intro: "Drag your courses into the semester planner."
+    ,
+      element: "#rules"
+      intro: "The rules sidebar will instantly show how close you are to satisfying your major requirements."
+      position: "left"
+    ,
+      intro: "That's it! Have fun planning. "
+    ]
+    showStepNumbers: false
+    exitOnOverlayClick: true
+    exitOnEsc: true
+    nextLabel: "<strong>NEXT!</strong>"
+    prevLabel: "<span style=\"color:green\">Previous</span>"
+    skipLabel: "Exit"
+    doneLabel: "Thanks"
+
   # BEGIN CoursesController, combinded for duplicate removal for now
 
   #todo: put garbage course in right place instead of sorting everything (since already sorted at beginning)
