@@ -18,7 +18,7 @@ body.landing_page {
   .container {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 50px;
+    margin-top: 20px;
   }
   input {
     -webkit-appearance: none; 
@@ -85,15 +85,12 @@ body.landing_page {
     color: white; 
     background-color: rgba(142,142,142,0.0); 
     border-style: 1px solid; 
-  }
-  .header.signup {
     height: 400px;
   }
   h3 {
     font-family: 'Pacifico'; 
     line-height: 46px;
     font-size: 43px; 
-    padding-top: 10px; 
     color: white; 
     text-align: center; 
   }
@@ -110,4 +107,14 @@ body.landing_page {
     font-size: 14px; 
     line-height: 13px; 
   }
+  .right.carousel-control, .left.carousel-control {
+  }
+  img.carousel {
+    visibility: hidden;
+  }
+  .carousel-indicators {
+    position: absolute;
+    bottom: 0;
+  }
+
 }

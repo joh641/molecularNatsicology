@@ -9,6 +9,7 @@ molecularnatsicology = angular.module 'molecularnatsicology', [
   'ngDragDrop'
   'ngRoute'
   'infinite-scroll'
+  'ui.bootstrap'
   'angular-intro'
   'molecularnatsicology.controllers'
   'molecularnatsicology.filters'
