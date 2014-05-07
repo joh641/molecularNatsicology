@@ -9,19 +9,6 @@ rules:
             rule: course_regex
             args: "()"
 
-    lowerdiv:
-        description: "Lower Division"
-        rule: course_number
-        args:
-            min: 0
-            max: 99
-
-    upperdiv:
-        description: "Upper Division"
-        rule: course_number
-        args:
-            min: 100
-
     university_ac:
         description: "American Cultures"
         university: true
