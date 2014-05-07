@@ -18,14 +18,17 @@ Plan Page
   - handling display of plan names that are long
   - ability to move courses within a semester around
   - ability to hide a year
+  - for demo, allow saving plan to user's plans if logged in
   - tutorial button
+  - highlight whole row for rules (green pass, red fail)
+  - sort by tabs (university, college, major)
 
 Rules Page
   - popular rules
 
 Profile Page
   - allow input of grades, display gpa overall/per semester
-  - user information (GPA, transcripts)
+  - user information (GPA, transcripts, major)
 
 Contact
 
@@ -44,24 +47,28 @@ Rules
       - utility function of numRulesSatisfied, proportion of courses left to fulfill other requirements
     - flag as an exclusive rule, which removes course from plan when checking rest
 Plans
-  - autopopulate plans from user information (major, years of semester)
+  - fix show.json for plan to not repeat startyear/major in each array
+  - autopopulate plans from user information (years of semester)
   - selecting which rules you want
   - share plan
     - public flag
     - allow nonowners to see if flag
     - if nonowner, no drag/drop
     - maybe don't show rules?
-    - don't show saveplan / garbage
+    - don't show garbage
 Semesters
   - semester object should have year+fa/sp/su
 Users
+  - save default major, semester/year start
   - delete courses (admin)
 
 Chores
   - going through completed rules, make sure they work
-  - documentation
+  - documentation 
+    -- refer to (http://stackoverflow.com/questions/2543979/example-of-a-well-documented-rails-project-and-or-best-pratices)
   - tag rules by major
   - clean up planscontroller
+  - more progressive data-ng-cloak
 
 After First Release
   - sample major plan
@@ -75,7 +82,6 @@ After First Release
   - labeling pnp courses
 
 Possible Features
-  - loading bars/progress wheel
   - switch plans without reload
   - ninjacourses/courserank semesterly calendar
   - color code rules/courses (breadth, major, university)
@@ -121,7 +127,6 @@ Errors
   - sometimes course modal doesn't pop up when you load plan initially
     - replicate error by switching page from plan, then returning to plan using browser back
     - course modal not rendered
-  - sometimes doesn't save if exit too quickly
 
 404 not found
 

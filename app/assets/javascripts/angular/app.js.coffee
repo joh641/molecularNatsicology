@@ -11,6 +11,8 @@ molecularnatsicology = angular.module 'molecularnatsicology', [
   'infinite-scroll'
   'ui.bootstrap'
   'angular-intro'
+  'cgBusy'
+  'chieffancypants.loadingBar'
   'molecularnatsicology.controllers'
   'molecularnatsicology.filters'
 ]

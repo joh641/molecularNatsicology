@@ -26,6 +26,10 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     ,
       intro: "Drag your courses into the semester planner."
     ,
+      element: "#majors"
+      intro: "Select a major."
+      position: "left"
+    ,
       element: "#rules"
       intro: "The rules sidebar will instantly show how close you are to satisfying your major requirements."
       position: "left"
@@ -41,7 +45,6 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     doneLabel: "Thanks"
 
   # CODE for Majors
-  $scope.currentMajor = "Molecular Toxicology"
   $scope.majors = [
     "Molecular Toxicology"
   ]
@@ -164,6 +167,8 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
   $scope.updatePlan = ->
     $scope.plan["courses"] = []
     $scope.plan["backpack"] = $scope["backpack"]
+    $scope.plan["major"] = $scope["currentMajor"]
+    $scope.plan["startYear"] = $scope["startYear"]
     for semester in $scope.semesters
       $scope.plan[semester] = $scope[semester]
       for course in $scope.plan[semester]
@@ -194,10 +199,25 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
 
   $scope.getRules()
 
-  $http.get("#{window.location.pathname}.json").success (data) ->
-    for semester in $scope.semesters.concat "backpack"
-      $scope[semester] = $scope.findSemester data, semester
-      $scope.$watchCollection semester, ->
+  $scope.startYearString = "2013"
+  $scope.years = [
+    "2010"
+    "2011"
+    "2012"
+    "2013"
+    "2014"
+  ]
+
+  $scope.$watch 'startYearString', ->
+    $scope.startYear = parseInt $scope.startYearString
+
+  $scope.planPromise = $http.get("#{window.location.pathname}.json").success (data) ->
+    $scope.startYearString = data[0]["startYear"]
+    $scope.currentMajor = data[0]["major"]
+    for section in $scope.semesters.concat ["backpack", "startYearString", "currentMajor"]
+      unless section is "startYearString" or section is "currentMajor"
+        $scope[section] = $scope.findSemester data, section
+      $scope.$watchCollection section, ->
         $scope.update()
     $scope.updatePlan()
     $scope.removeDuplicates()
