@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
   respond_to :html, :json
+
+  before_action :set_cache_buster, :only => [:demo]
   
   def index
     if signed_in?

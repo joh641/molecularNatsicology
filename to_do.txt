@@ -22,15 +22,18 @@ Plan Page
   - tutorial button
   - highlight whole row for rules (green pass, red fail)
   - sort by tabs (university, college, major)
+  - when clearing semester, say "Clear #{semester} #{year}" instead of backend name
 
 Rules Page
   - popular rules
+  - maybe infinite scroll for rule/show
 
 Profile Page
   - allow input of grades, display gpa overall/per semester
   - user information (GPA, transcripts, major)
 
 Contact
+  - bug reporting
 
 Courses
   - save dept name as field
@@ -69,6 +72,7 @@ Chores
   - tag rules by major
   - clean up planscontroller
   - more progressive data-ng-cloak
+  - tests
 
 After First Release
   - sample major plan
@@ -124,11 +128,8 @@ Optional
         yaml files
 
 Errors
-  - browser back/forward caching issue
-  - http://www.sitekickr.com/blog/back-button-browser-cache/
-  - loses save
-  - course modal not rendered
-  - planCourses not updated?
+  - course modals not rendered sometimes for courses in plan
+    - planCourses not updated? 
 
 404 not found
 
