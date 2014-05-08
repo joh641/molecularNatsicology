@@ -1,6 +1,6 @@
 #Rules controller
 
-angular.module('ursamajor.controllers').controller 'RuleDetailCtrl', ['$scope', '$http', ($scope, $http) ->
+angular.module('molecularnatsicology.controllers').controller 'RuleDetailCtrl', ['$scope', '$http', ($scope, $http) ->
   
   $scope.sortCourses = (a, b) -> switch
       when a.dept > b.dept then 1
