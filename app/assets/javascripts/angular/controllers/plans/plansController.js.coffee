@@ -16,6 +16,10 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
       intro: "Search here for courses."
       position: "right"
     ,
+      element: "#query"
+      intro: "Click on a course to get its description."
+      position: "right"
+    ,
       element: ".backpack"
       intro: "Drag courses to your backpack for later use."
       position: "right"
@@ -26,12 +30,20 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     ,
       intro: "Drag your courses into the semester planner."
     ,
-      element: "#majors"
+      element: "#majors select"
       intro: "Select a major."
       position: "left"
     ,
-      element: "#rules"
+      element: "#rules table"
       intro: "The rules sidebar will instantly show how close you are to satisfying your major requirements."
+      position: "left"
+    ,
+      element: "a.rule"
+      intro: "Click on a requirement to show all courses that fulfill it."
+      position: "right"
+    ,
+      element: "a.result"
+      intro: "Click on a checkmark to show all courses in your current plan that fulfill the requirement."
       position: "left"
     ,
       intro: "That's it! Have fun planning. "
@@ -192,9 +204,8 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.savePlan()
 
   $scope.removeDuplicates = ->
-    $scope.planCourses = $scope.plan["courses"].concat $scope.backpack
-    $scope.planCourses = (course.id for course in $scope.planCourses)
-    $scope.courses = $scope.courses.filter (course) -> course.id not in $scope.planCourses
+    courseIds = (course.id for course in $scope.planCourses)
+    $scope.courses = $scope.courses.filter (course) -> course.id not in courseIds
 
   $scope.startYearString = "2013"
   $scope.years = [
@@ -209,11 +220,11 @@ angular.module('molecularnatsicology.controllers').controller 'PlanDetailCtrl', 
     $scope.startYear = parseInt $scope.startYearString
 
   $scope.planPromise = $http.get("#{window.location.pathname}.json").success (data) ->
-    $scope.startYearString = data[0]["startYear"]
-    $scope.currentMajor = data[0]["major"]
+    $scope.startYearString = data["startYear"]
+    $scope.currentMajor = data["major"]
     for section in $scope.semesters.concat ["backpack", "startYearString", "currentMajor"]
       unless section is "startYearString" or section is "currentMajor"
-        $scope[section] = $scope.findSemester data, section
+        $scope[section] = $scope.findSemester data["semesters"], section
       $scope.$watchCollection section, ->
         $scope.update()
     $scope.updatePlan()
