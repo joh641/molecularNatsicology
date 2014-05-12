@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
   respond_to :html, :json
+  before_action :cors_set_access_control_headers, :only => [:tagged_courses]
 
   def index
     @courses = Course.order 'name ASC'
@@ -9,6 +10,10 @@ class CoursesController < ApplicationController
     if ! [nil, ""].include? query
       query = "%"+query.upcase+"%"
       @courses = Course.search_query query
+    end
+    respond_to do |format|
+      format.html
+      format.json { render 'index.json' }
     end
   end
 
