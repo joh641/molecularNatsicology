@@ -18,8 +18,8 @@ angular.module('molecularnatsicology.controllers').controller 'CourseListCtrl', 
   $scope.addMoreCourses = ->
     $scope.totalDisplayed += 30
 
-  $scope.courseDisplay= (course) ->
-    $("#course_#{course}").modal('show')
+  $scope.selectCourse = (course) ->
+    $scope.selectedCourse = course
 
   $scope.$watch 'query', ->
     $scope.totalDisplayed = 20
